@@ -9,7 +9,7 @@ const customFields = {
     usernameField: 'uname',
     passwordField: 'pw'
 }
-const verifyCallback = (username.password, done) => {
+const verifyCallback = (username,password, done) => {
     User.findOne({ username: username })
         .then((user) => {
             if (!user) { return done(null, false) }
@@ -22,10 +22,22 @@ const verifyCallback = (username.password, done) => {
                 return done(null, false)
             }
         })
-        .cath((err)=>{
-            done78(err)
+        .cath((err) => {
+            done(err)
         })
 }
 const Strategy = new LocalStrategy(customFields, verifyCallback)
 
 passport.use(Strategy)
+
+passport.serializeUser((user, done) => {
+    done(null, user.id)
+})
+
+passport.deserializeUser((userId, done) => {
+    User.findById(userId)
+        .then((user) => {
+            done(null, user)
+        })
+        .catch(err => done(err))
+})

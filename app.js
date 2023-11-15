@@ -8,10 +8,11 @@ const connection = require('./config/database');
 
 
 const MongoStore = require('connect-mongo')(session);
-
+var app = express();
 
 require('./config/passport');
-
+app.use(passport.initialize())
+app.use(passport.session())
 /**
  * -------------- GENERAL SETUP ----------------
  */
@@ -20,7 +21,7 @@ require('./config/passport');
 require('dotenv').config();
 
 // Create the Express application
-var app = express();
+
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
