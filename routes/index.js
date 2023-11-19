@@ -8,19 +8,18 @@ const User = connection.models.User;
  * -------------- POST ROUTES ----------------
  */
 
- // TODO
- router.post('/login', passport.authenticate('local'),(req, res, next) => {});
+
+ router.post('/login', passport.authenticate('local',{failureRedirect: '/login-failure', successRedirect:'/login-success'}));
 
 
  router.post('/register', (req, res, next) => {
-    console.log(req.body);
     const saltHash= genPassword(req.body.password);
 
     const salt=saltHash.salt;
     const hash=saltHash.hash;
 
     const newUser= new User ({
-        username: req.body.uname,
+        username: req.body.username,
         hash: hash,
         salt: salt
     });

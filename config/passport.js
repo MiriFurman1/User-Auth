@@ -6,26 +6,33 @@ const User = connection.models.User;
 
 
 const customFields = {
-    usernameField: 'uname',
-    passwordField: 'pw'
+    username: 'uname',
+    password: 'pw'
 }
-const verifyCallback = (username,password, done) => {
+const verifyCallback = (username, password, done) => {
+    console.log(username);
+    console.log(password);
+    console.log(User);
     User.findOne({ username: username })
         .then((user) => {
-            if (!user) { return done(null, false) }
+            console.log(user);
 
-            const isValid = validPassword(password, user.hash, user.salt)
+            if (!user) {
+                return done(null, false);
+            }
+
+            const isValid = validPassword(password, user.hash, user.salt);
             if (isValid) {
-                return done(null, user)
-            }
-            else {
-                return done(null, false)
+                return done(null, user);
+            } else {
+                return done(null, false);
             }
         })
-        .cath((err) => {
-            done(err)
-        })
-}
+        .catch((err) => {
+            done(err);
+        });
+};
+
 const Strategy = new LocalStrategy(customFields, verifyCallback)
 
 passport.use(Strategy)
