@@ -5,6 +5,7 @@ var passport = require('passport');
 var crypto = require('crypto');
 var routes = require('./routes');
 const connection = require('./config/database');
+const { log } = require('console');
 
 
 const MongoStore = require('connect-mongo')(session);
@@ -49,6 +50,12 @@ app.use(express.urlencoded({extended: true}));
 app.use(passport.initialize());
 app.use(passport.session());
 
+//!for debugging 
+// app.use((req,res,next)=>{
+//     console.log(req.session);
+//     console.log(req.user);
+//     next();
+// })
 
 /**
  * -------------- ROUTES ----------------
